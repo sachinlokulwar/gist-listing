@@ -11,7 +11,8 @@
 angular
   .module('gistListingApp', [
     'ngCookies',
-    'ngRoute'
+    'ngRoute',
+    'ngResource'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -20,12 +21,11 @@ angular
         controller: 'MainCtrl',
         controllerAs: 'main'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
-      })
       .otherwise({
         redirectTo: '/'
       });
+  }).constant('AppConfig', {
+    'BASE_URL': 'https://api.github.com',
+    'GIST' : '/gists',
+    'USERS': '/users'
   });

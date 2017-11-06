@@ -1,1 +1,43 @@
-<h1> This is main page</h1>
+<div ng-if="ui.showList">
+  <div class="row">
+    <div class="col-md-12">
+      <input type="text" class="username form-control" ng-model="ui.username">
+      <button class="btn btn-primary search-btn" ng-click="searchClicked()">Search</button>
+    </div>
+  </div>
+  <div class="gist-listing">
+    <div class="row row-no-margin">
+      <div ng-if="allGist.length <= 0" class="nologs">
+          No gist found with your search criteria
+      </div>
+      <div class="table" ng-if="allGist.length > 0">
+        <div ng-if="allGist.length > 0" class="row table-header row-no-margin">
+          <div class="col-md-4 zero-padding" style="outline:none;">Gist Id </div>
+          <div class="col-md-2 zero-padding">Owner</div>
+          <div class="col-md-3 zero-padding">File Name</div>
+          <div class="col-md-3 zero-padding">Language</div>
+        </div>
+        <div class="table-body">
+          <div class="row table-row row-no-margin" ng-repeat="gistObj in allGist">
+            <div class="col-md-4 no-padding"><a class="gistId pointer_cursor" ng-click="openGistDetails(gistObj.id)">{{gistObj.id}}</a></div>
+            <div class="col-md-2 no-padding"><a href="{{gistObj.owner.url}}">{{gistObj.owner.login}}</a></div>
+            <div class="col-md-6 zero-padding">
+              <div ng-repeat="file in gistObj.files" class="row table-inner-row row-no-margin">
+                <div class="col-md-6 zero-padding">
+                  {{file.filename}}
+                </div >
+                <div class="col-md-6 zero-padding">
+                  {{file.language}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-if="ui.showDetails">
+  <a class="back-to" ng-click="backToList()"> << back to gist Listing</a>
+  <h1>Details :</h1>
+</div>
