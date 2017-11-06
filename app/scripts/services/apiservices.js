@@ -15,5 +15,8 @@ angular.module('gistListingApp')
   this.getAllGist = function(url,data){
       return makeRequest(url, 'GET', data, null, null);
   };
+  this.getGistDetails = function(url,data){
+      return makeRequest(url, 'GET', data, null, null);
+  };
 
 });

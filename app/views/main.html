@@ -1,35 +1,70 @@
 <div ng-if="ui.showList">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-8">
       <input type="text" class="username form-control" ng-model="ui.username">
       <button class="btn btn-primary search-btn" ng-click="searchClicked()">Search</button>
+    </div>
+    <div class="col-md-4">
+      
+      <div class="dropdown pull-right">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Tags
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu" >
+          <li><a href="#" ng-repeat="tag in tags">{{tag}}</a></li>
+        </ul>
+      </div>
+      <div class="pull-right select-tag">Select Tag</div>
     </div>
   </div>
   <div class="gist-listing">
     <div class="row row-no-margin">
-      <div ng-if="allGist.length <= 0" class="nologs">
+      <div ng-if="allGist.length <= 0 && !ui.searchGist" class="nologs">
           No gist found with your search criteria
       </div>
+      <div ng-if="ui.searchGist" class="loading-container loading"></div>
       <div class="table" ng-if="allGist.length > 0">
         <div ng-if="allGist.length > 0" class="row table-header row-no-margin">
-          <div class="col-md-4 zero-padding" style="outline:none;">Gist Id </div>
-          <div class="col-md-2 zero-padding">Owner</div>
-          <div class="col-md-3 zero-padding">File Name</div>
-          <div class="col-md-3 zero-padding">Language</div>
+          <div class="col-md-4 no-padding table-heading" style="outline:none;">Gist Id 
+            <ul class="sort-icon">
+              <li ng-class="(ui.sort == 'id' && ui.sortDirection == 'ascending') ? 'active': ''" class="ascending arrow-up" ng-click="changeSort('id' , 'ascending')"></li>
+              <li ng-class="(ui.sort == 'id' && ui.sortDirection == 'descending') ? 'active': ''" class="descending arrow-down" ng-click="changeSort('id' , 'descending')"></li>
+            </ul>
+          </div>
+          <div class="col-md-2 no-padding table-heading">Created At 
+            <ul class="sort-icon">
+              <li ng-class="(ui.sort == 'created_at' && ui.sortDirection == 'ascending') ? 'active': ''" class="ascending arrow-up" ng-click="changeSort('created_at' , 'ascending')"></li>
+              <li ng-class="(ui.sort == 'created_at' && ui.sortDirection == 'descending') ? 'active': ''" class="descending arrow-down" ng-click="changeSort('created_at' , 'descending')"></li>
+            </ul>
+          </div>
+          <div class="col-md-2 no-padding table-heading">Updated At
+            <ul class="sort-icon">
+              <li ng-class="(ui.sort == 'updated_at' && ui.sortDirection == 'ascending') ? 'active': ''" class="ascending arrow-up" ng-click="changeSort('updated_at' , 'ascending')"></li>
+              <li ng-class="(ui.sort == 'updated_at' && ui.sortDirection == 'descending') ? 'active': ''" class="descending arrow-down" ng-click="changeSort('updated_at' , 'descending')"></li>
+            </ul>
+          </div>
+          <div class="col-md-2 no-padding table-heading">File Name
+            <ul class="sort-icon">
+              <li ng-class="(ui.sort == 'filename' && ui.sortDirection == 'ascending') ? 'active': ''" class="ascending arrow-up" ng-click="changeSort('filename' , 'ascending')"></li>
+              <li ng-class="(ui.sort == 'filename' && ui.sortDirection == 'descending') ? 'active': ''" class="descending arrow-down" ng-click="changeSort('filename' , 'descending')"></li>
+            </ul>
+          </div>
+          <div class="col-md-2 no-padding table-heading">Language
+            <ul class="sort-icon">
+              <li ng-class="(ui.sort == 'language' && ui.sortDirection == 'ascending') ? 'active': ''" class="ascending arrow-up" ng-click="changeSort('language' , 'ascending')"></li>
+              <li ng-class="(ui.sort == 'language' && ui.sortDirection == 'descending') ? 'active': ''" class="descending arrow-down" ng-click="changeSort('language' , 'descending')"></li>
+            </ul>
+          </div>
         </div>
         <div class="table-body">
-          <div class="row table-row row-no-margin" ng-repeat="gistObj in allGist">
-            <div class="col-md-4 no-padding"><a class="gistId pointer_cursor" ng-click="openGistDetails(gistObj.id)">{{gistObj.id}}</a></div>
-            <div class="col-md-2 no-padding"><a href="{{gistObj.owner.url}}">{{gistObj.owner.login}}</a></div>
-            <div class="col-md-6 zero-padding">
-              <div ng-repeat="file in gistObj.files" class="row table-inner-row row-no-margin">
-                <div class="col-md-6 zero-padding">
-                  {{file.filename}}
-                </div >
-                <div class="col-md-6 zero-padding">
-                  {{file.language}}
-                </div>
-              </div>
+          <div class="row table-row row-no-margin" ng-repeat="gistObj in allGist | orderBy: ui.sort : (ui.sortDirection == 'descending' ? true : false)">
+            <div class="col-md-4 no-padding"><a class="gistId pointer_cursor" ng-click="openGistDetails(gistObj)">{{gistObj.id}}</a></div>
+            <div class="col-md-2 no-padding left-border">{{gistObj.created_at | date}}</div>
+            <div class="col-md-2 no-padding left-border">{{gistObj.updated_at | date}}</div>    
+            <div class="col-md-2 no-padding left-border">
+              {{gistObj.filename}}
+            </div >
+            <div class="col-md-2 no-padding left-border">
+              {{gistObj.language}}
             </div>
           </div>
         </div>
@@ -40,4 +75,43 @@
 <div ng-if="ui.showDetails">
   <a class="back-to" ng-click="backToList()"> << back to gist Listing</a>
   <h1>Details :</h1>
+  <div class="row row-no-margin">
+    <div class="col-md-4">
+      <img src="{{gistDetails.owner.avatar_url}}" class="avatar">
+      <div><a href="{{gistDetails.owner.url}}">{{gistDetails.owner.login}}</a></div>
+    </div>
+    <div class="col-md-8">
+      <label>Id:</label> <span>{{gistDetails.id}}</span> </br>
+      <label>Description:</label> <span>{{gistDetails.description}} </span></br>
+      <label>Created At:</label> <span>{{gistDetails.created_at | date}}</span> </br>
+      <label>Updated At:</label> <span>{{gistDetails.updated_at | date}} </span></br>
+    </div>
+  </div>
+  <div class="row row-no-margin">
+    <h2>Fork Details:</h2>
+    <div ng-if="gistForkDetails.length <= 0" class="nologs">
+      No Forks found for this gist
+    </div>
+    <div class="table" ng-if="gistForkDetails.length > 0">
+      <div class="row table-header row-no-margin">
+        <div class="col-md-2 zero-padding" style="outline:none;">Avatar</div>
+        <div class="col-md-4 zero-padding">User name</div>
+        <div class="col-md-6 zero-padding">Created At</div>
+      </div>
+      <div class="table-body">
+        <div class="row table-row row-no-margin" ng-repeat="forkObj in gistForkDetails">
+          <div class="col-md-2 no-padding"><img class="fork-avatar" src="{{forkObj.owner.avatar_url}}"></div>
+          <div class="col-md-4 no-padding"><a href="{{forkObj.owner.url}}">{{forkObj.owner.login}}</a></div>
+          <div class="col-md-6 no-padding">{{forkObj.created_at | date}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div ng-if="gistForkDetails.length > 0" class="row row-no-margin" ng-repeat="forkObj in gistForkDetails">
+      <div class="col-md-2"><img class="fork-avatar" src="{{forkObj.owner.avatar_url}}"></div>
+      <div class="col-md-10">
+        <label>Created At:</label> <span>{{forkObj.created_at | date}}</span> </br>
+      </div>
+    </div> -->
+  </div>
 </div>

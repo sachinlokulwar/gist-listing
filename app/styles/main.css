@@ -97,7 +97,7 @@ body {
   margin-top: 10px;
 }
 .table-header{
-    padding: 15px 10px; 
+    padding: 5px 0px; 
     background: #2A2A2A;
     color: #FFF;
         border-top-left-radius: 5px;
@@ -142,9 +142,10 @@ body {
 .nologs{
     text-align: center;
     margin-top : 1em;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     color: rgba(0,0,0,0.5);
+    line-height: 50px;
 }
 .back-to{
   cursor: pointer;
@@ -153,3 +154,56 @@ body {
 .back-to:hover{
   text-decoration: none;
 }
+.avatar{
+  height: 120px;
+}
+.fork-avatar{
+  height: 50px;
+}
+.select-tag{
+  line-height: 34px;
+  margin-right: 5px;
+}
+
+.table-heading > ul {
+  list-style-type: none;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+.arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #a2a2a2;
+    margin: 5px;
+    cursor: pointer;
+  }
+  .arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #a2a2a2;
+    margin: 5px;
+    cursor: pointer;
+  }
+  .arrow-down.active {
+    border-top: 5px solid #3784d3;
+  }
+  .arrow-up.active {
+    border-bottom: 5px solid #3784d3;
+  }
+  .loading{
+    background: url('//a.edim.co/images/loading.gif') no-repeat !important;
+    background-position: center !important;
+  }
+  .loading-container{
+    display: block;
+    height: 100px;
+    width:100%;
+  }
+  
