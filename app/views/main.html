@@ -14,14 +14,7 @@
       <select ng-model="ui.currentTag" class="pull-right droupdown" ng-change="selectTag(ui.currentTag)">
         <option value="" selected disabled hidden>Select tag</option>
         <option ng-repeat="tag in tags" value="{{tag}}">{{tag}}</option>
-      </select><!-- 
-      <div class="dropdown pull-right">
-        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Tags
-        <span class="caret"></span></button>
-        <ul class="dropdown-menu" >
-          <li><a href="#" ng-repeat="tag in tags" ng-click="ui.currentTag = tag">{{tag}}</a></li>
-        </ul>
-      </div> -->
+      </select>
       <div class="pull-right select-tag">Select Tag</div>
     </div>
   </div>
@@ -98,17 +91,18 @@
   </div>
   <div class="row row-no-margin">
     <h2>Fork Details:</h2>
-    <div ng-if="gistForkDetails.length <= 0" class="nologs">
+    <div ng-if="gistForkDetails.length <= 0 && !ui.searchDetails" class="nologs">
       No Forks found for this gist
     </div>
+    <div ng-if="ui.searchGist" class="loading-container loading"></div>
     <div class="table" ng-if="gistForkDetails.length > 0">
       <div class="row table-header row-no-margin">
-        <div class="col-md-2 zero-padding" style="outline:none;">Avatar</div>
-        <div class="col-md-4 zero-padding">User name</div>
-        <div class="col-md-6 zero-padding">Created At</div>
+        <div class="col-md-2 no-padding" style="outline:none;">Avatar</div>
+        <div class="col-md-4 no-padding">User name</div>
+        <div class="col-md-6 no-padding">Created At</div>
       </div>
       <div class="table-body">
-        <div class="row table-row row-no-margin" ng-repeat="forkObj in gistForkDetails">
+        <div class="row table-row row-no-margin" ng-repeat="forkObj in gistForkDetails | filter:{avatar_url: '!'} | limitTo: 3">
           <div class="col-md-2 no-padding"><img class="fork-avatar" src="{{forkObj.owner.avatar_url}}"></div>
           <div class="col-md-4 no-padding"><a href="{{forkObj.owner.url}}">{{forkObj.owner.login}}</a></div>
           <div class="col-md-6 no-padding">{{forkObj.created_at | date}}</div>
@@ -116,11 +110,5 @@
       </div>
     </div>
 
-    <!-- <div ng-if="gistForkDetails.length > 0" class="row row-no-margin" ng-repeat="forkObj in gistForkDetails">
-      <div class="col-md-2"><img class="fork-avatar" src="{{forkObj.owner.avatar_url}}"></div>
-      <div class="col-md-10">
-        <label>Created At:</label> <span>{{forkObj.created_at | date}}</span> </br>
-      </div>
-    </div> -->
   </div>
 </div>

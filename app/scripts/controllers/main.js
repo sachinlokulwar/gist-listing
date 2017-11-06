@@ -21,6 +21,7 @@ angular.module('gistListingApp')
   		sort: 'id',
   		sortDirection: 'descending',
   		searchGist: false,
+  		searchDetails: false,
   		currentTag: '',
   		apiHits: window.localStorage.getItem('apiHitCount') ? window.localStorage.getItem('apiHitCount') : 0
   	};
@@ -46,7 +47,8 @@ angular.module('gistListingApp')
         			created_at: data.data[gist].created_at,
         			updated_at: data.data[gist].updated_at,
         			description: data.data[gist].description,
-        			owner: data.data[gist].owner
+        			owner: data.data[gist].owner,
+        			forks_url: data.data[gist].forks_url
         		}
         		for(var file in data.data[gist].files){
         			if($scope.tags.indexOf(data.data[gist].files[file].language) == -1){
@@ -76,7 +78,8 @@ angular.module('gistListingApp')
     $scope.openGistDetails = function(gistObj){
     	$scope.ui.showList = false;
     	$scope.ui.showDetails = true;
-    	$scope.gistDetails = gistObj
+    	$scope.gistDetails = gistObj;
+    	$scope.ui.searchDetails = true;
     	var count = window.localStorage.getItem('apiHitCount');
   		if(count){
   			window.localStorage.setItem('apiHitCount', parseInt(count) + 1);
@@ -87,6 +90,7 @@ angular.module('gistListingApp')
   			$scope.ui.apiHits = 1;
   		}
     	apiService.getGistDetails(gistObj.forks_url, null).then(function(data, status, headers){
+    		$scope.ui.searchDetails = false;
         	$scope.gistForkDetails = data.data;
     	});
 
