@@ -206,4 +206,9 @@ body {
     height: 100px;
     width:100%;
   }
+  .droupdown{
+        width: 100px;
+    height: 34px;
+    border-radius: 4px;
+  }
   

@@ -20,7 +20,8 @@ angular.module('gistListingApp')
   		reverse: true,
   		sort: 'id',
   		sortDirection: 'descending',
-  		searchGist: false
+  		searchGist: false,
+  		currentTag: ''
   	};
 
   	function getGistList(username){
@@ -51,17 +52,17 @@ angular.module('gistListingApp')
         			tempObj.size = data.data[gist].files[file].size;
 
         			$scope.allGist.push(tempObj);
-        		}
-        	}
+        		};
+        	};
         	$scope.ui.searchGist = false;
-        	console.log($scope.allGist)
-    	})
-    }
+        	console.log($scope.allGist);
+    	});
+    };
 
     $scope.searchClicked = function(){
     	console.log($scope.ui.username);
     	getGistList($scope.ui.username)	
-    }
+    };
 
     $scope.openGistDetails = function(gistObj){
     	$scope.ui.showList = false;
@@ -69,17 +70,22 @@ angular.module('gistListingApp')
     	$scope.gistDetails = gistObj
     	apiService.getGistDetails(gistObj.forks_url, null).then(function(data, status, headers){
         	$scope.gistForkDetails = data.data;
-    	})
+    	});
 
-    }
+    };
 
     $scope.backToList = function(){
     	$scope.ui.showList = true;
     	$scope.ui.showDetails = false;
-    }
+    };
 
     $scope.changeSort = function(sort, direction){
     	$scope.ui.sort = sort;
     	$scope.ui.sortDirection = direction;
-    }
+    };
+
+    $scope.selectTag = function(tag){
+    	$scope.ui.currentTag = tag ? tag : '';
+    };
+
   });

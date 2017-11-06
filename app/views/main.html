@@ -4,15 +4,18 @@
       <input type="text" class="username form-control" ng-model="ui.username">
       <button class="btn btn-primary search-btn" ng-click="searchClicked()">Search</button>
     </div>
-    <div class="col-md-4">
-      
+    <div ng-if="tags.length > 0" class="col-md-4">
+      <select ng-model="ui.currentTag" class="pull-right droupdown" ng-change="selectTag(ui.currentTag)">
+        <option value="" selected disabled hidden>Select tag</option>
+        <option ng-repeat="tag in tags" value="{{tag}}">{{tag}}</option>
+      </select><!-- 
       <div class="dropdown pull-right">
         <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Tags
         <span class="caret"></span></button>
         <ul class="dropdown-menu" >
-          <li><a href="#" ng-repeat="tag in tags">{{tag}}</a></li>
+          <li><a href="#" ng-repeat="tag in tags" ng-click="ui.currentTag = tag">{{tag}}</a></li>
         </ul>
-      </div>
+      </div> -->
       <div class="pull-right select-tag">Select Tag</div>
     </div>
   </div>
@@ -56,7 +59,7 @@
           </div>
         </div>
         <div class="table-body">
-          <div class="row table-row row-no-margin" ng-repeat="gistObj in allGist | orderBy: ui.sort : (ui.sortDirection == 'descending' ? true : false)">
+          <div class="row table-row row-no-margin" ng-repeat="gistObj in allGist | filter :{language: ui.currentTag} | orderBy: ui.sort : (ui.sortDirection == 'descending' ? true : false)">
             <div class="col-md-4 no-padding"><a class="gistId pointer_cursor" ng-click="openGistDetails(gistObj)">{{gistObj.id}}</a></div>
             <div class="col-md-2 no-padding left-border">{{gistObj.created_at | date}}</div>
             <div class="col-md-2 no-padding left-border">{{gistObj.updated_at | date}}</div>    
