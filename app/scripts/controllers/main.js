@@ -22,7 +22,7 @@ angular.module('gistListingApp')
   		sortDirection: 'descending',
   		searchGist: false,
   		currentTag: '',
-  		apiHits: window.localStorage.getItem('apiHitCount')
+  		apiHits: window.localStorage.getItem('apiHitCount') ? window.localStorage.getItem('apiHitCount') : 0
   	};
 
   	function getGistList(username){
@@ -35,7 +35,7 @@ angular.module('gistListingApp')
   		}
   		else{
   			window.localStorage.setItem('apiHitCount', 1);
-  			$scope.ui.apiHits = parseInt(count);
+  			$scope.ui.apiHits = 1;
   		}
   		apiService.getAllGist(AppConfig.BASE_URL + AppConfig.USERS + "/" + username + AppConfig.GIST, null).then(function(data, status, headers){
         	$scope.allGist = [];
@@ -84,7 +84,7 @@ angular.module('gistListingApp')
   		}
   		else{
   			window.localStorage.setItem('apiHitCount', 1);
-  			$scope.ui.apiHits = parseInt(count) + 1;
+  			$scope.ui.apiHits = 1;
   		}
     	apiService.getGistDetails(gistObj.forks_url, null).then(function(data, status, headers){
         	$scope.gistForkDetails = data.data;
