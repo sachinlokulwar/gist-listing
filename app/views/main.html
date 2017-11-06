@@ -1,7 +1,13 @@
+<div class="row row-no-margin api-details-section">
+  <div class="col-md-12 pull-right api-hits zero-padding">
+    <div class="count pull-right">{{ui.apiHits}}</div>
+    <div class="pull-right">Current Session API hits : </div>
+  </div>
+</div>
 <div ng-if="ui.showList">
   <div class="row">
     <div class="col-md-8">
-      <input type="text" class="username form-control" ng-model="ui.username">
+      <input type="text" class="username form-control" ng-model="ui.username" placeholder="Enter gist Username">
       <button class="btn btn-primary search-btn" ng-click="searchClicked()">Search</button>
     </div>
     <div ng-if="tags.length > 0" class="col-md-4">

@@ -16,18 +16,27 @@ angular.module('gistListingApp')
   	$scope.ui = {
   		showList : true,
   		showDetails: false,
-  		username: 'octocat',
+  		username: '',
   		reverse: true,
   		sort: 'id',
   		sortDirection: 'descending',
   		searchGist: false,
-  		currentTag: ''
+  		currentTag: '',
+  		apiHits: window.localStorage.getItem('apiHitCount')
   	};
 
   	function getGistList(username){
 
   		$scope.ui.searchGist = true;
-  		
+  		var count = window.localStorage.getItem('apiHitCount');
+  		if(count){
+  			window.localStorage.setItem('apiHitCount', parseInt(count) + 1);
+  			$scope.ui.apiHits = parseInt(count) + 1;
+  		}
+  		else{
+  			window.localStorage.setItem('apiHitCount', 1);
+  			$scope.ui.apiHits = parseInt(count);
+  		}
   		apiService.getAllGist(AppConfig.BASE_URL + AppConfig.USERS + "/" + username + AppConfig.GIST, null).then(function(data, status, headers){
         	$scope.allGist = [];
         	for(var gist in data.data){
@@ -68,6 +77,15 @@ angular.module('gistListingApp')
     	$scope.ui.showList = false;
     	$scope.ui.showDetails = true;
     	$scope.gistDetails = gistObj
+    	var count = window.localStorage.getItem('apiHitCount');
+  		if(count){
+  			window.localStorage.setItem('apiHitCount', parseInt(count) + 1);
+  			$scope.ui.apiHits = parseInt(count) + 1;
+  		}
+  		else{
+  			window.localStorage.setItem('apiHitCount', 1);
+  			$scope.ui.apiHits = parseInt(count) + 1;
+  		}
     	apiService.getGistDetails(gistObj.forks_url, null).then(function(data, status, headers){
         	$scope.gistForkDetails = data.data;
     	});
